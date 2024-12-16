@@ -1,0 +1,24 @@
+<div class="container">
+    <div>
+        <h1>Desde este panel usted puede manejar su alarma:</h1>
+    </div>
+    <div>
+        <p>Modo</p>
+        <form [formGroup]="form" (ngSubmit)="send()">
+            <select class="form-control" formControlName="select">
+                <option value="">Elegir el modo...</option>
+                <option *ngFor="let alarm of alarms" [value]="alarm.id">{{alarm.name}}</option>
+            </select>
+            <div *ngIf="form.get('select')?.touched && form.get('select')?.errors?.['required']" class="text-danger">
+                El modo es requerido
+            </div>
+
+            <div>
+                <button type="submit" class="btn form-control" [disabled]="!form.valid"
+                    [ngClass]="!status ? 'btn-outline-success' : 'btn-outline-danger'">
+                    <h2>{{ !status ? 'Armar' : 'Desarmar' }}</h2>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

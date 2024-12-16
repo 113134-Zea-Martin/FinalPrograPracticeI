@@ -1,0 +1,58 @@
+<div class="container mt-4">
+    <h1 class="mb-4">Nuevo Modo</h1>
+    <form [formGroup]="nuevoModoForm" class="card p-4" (ngSubmit)="submit()">
+        <!-- Información general -->
+        <div class="mb-4">
+            <h5 class="mb-3">Información general</h5>
+            <div class="form-group">
+                <label for="usuarioInput" class="form-label">Usuario</label>
+                <input type="text" class="form-control" [value]="user?.email" id="usuarioInput" disabled>
+            </div>
+            <div class="form-group mt-3">
+                <label for="nombreInput" class="form-label">Nombre</label>
+                <input type="text" class="form-control" formControlName="nombre" id="nombreInput">
+            </div>
+        </div>
+
+        <!-- Zonas -->
+        <div class="mb-4">
+            <h5 class="mb-3">Zonas</h5>
+            <button type="button" class="btn btn-link p-0 mb-3" (click)="addZona()">
+                + Nueva Zona</button>
+            <div *ngIf="zonasFormArray.length === 0" class="text-muted">
+                No hay zonas cargadas...
+            </div>
+            <div formArrayName="zonasFA">
+                <div *ngFor="let zona of zonasFormArray.controls; let i = index" [formGroupName]="i"
+                    class="d-flex align-items-center mb-3">
+                    <div class="flex-grow-1">
+                        <label for="nombreZonaSelect-{{i}}" class="form-label">Zona #{{i + 1}}</label>
+
+                        <div class="d-flex align-items-center mb-3">
+                            <!-- Select -->
+                            <div class="flex-grow-1">
+                                <select class="form-control" formControlName="zona" id="nombreZonaSelect-{{i}}">
+                                    <option *ngFor="let zona of zonas" [value]="zona.id">{{zona.name}}</option>
+                                </select>
+                            </div>
+                            <!-- Botón de eliminar -->
+                            <button type="button" class="btn btn-dark ms-3" (click)="removeZona(i)">
+                                <i class="bi bi-trash-fill"></i> <!-- Icono de basura -->
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+                @if (nuevoModoForm.hasError('uniqueZonas', 'zonasFA')) {
+                <div class="text-danger">No pueden haber zonas repetidas</div>
+                }
+            </div>
+        </div>
+
+        <!-- Botones -->
+        <div class="d-flex justify-content-between">
+            <button type="button" class="btn btn-secondary" (click)="cancel()">Cancelar</button>
+            <button type="submit" class="btn btn-primary" [disabled]="!nuevoModoForm.valid">Guardar</button>
+        </div>
+    </form>
+</div>
